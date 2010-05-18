@@ -2371,7 +2371,7 @@ void MaRequest::writeHeaders()
 		mprFree(date);
 	}
 	if (etag) {
-		outputHeader("ETag: \"%s\"", etag);
+		outputHeader("ETag: %s", etag);
 	}
 
 	if (flags & MPR_HTTP_CHUNKED) {
@@ -3450,7 +3450,7 @@ int MaRequest::setFileName(char *newPath)
 		return 0;
 	}
 
-	mprSprintf(tagBuf, sizeof(tagBuf), "%x-%x-%x", fileInfo.inode, 
+	mprSprintf(tagBuf, sizeof(tagBuf), "\"%x-%x-%x\"", fileInfo.inode, 
 		fileInfo.size, fileInfo.mtime);
 	mprFree(etag);
 	etag = mprStrdup(tagBuf);
