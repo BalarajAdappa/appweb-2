@@ -764,6 +764,12 @@ void MaRequest::processRequest()
 				}
 				state = MPR_HTTP_RUN_HANDLERS;
 				runHandlers();
+#if MOB || 1
+                if (state < MPR_HTTP_DONE && !(flags & MPR_HTTP_CONTENT_DATA)) {
+                    /* Processing content data - Must not continue round this loop */
+                    return;
+                }
+#endif
 			}
 			break;
 
@@ -1397,6 +1403,11 @@ int MaRequest::writeEvent(bool completeRequired)
 		if (completeRequired) {
 			finishRequest();
 		}
+#if MOB || 1
+        if (state == MPR_HTTP_START && inBuf->getLength() > 0) {
+            processRequest();
+        }
+#endif
 		return 0;
 	}
 	return totalBytes;
@@ -2068,7 +2079,9 @@ void MaRequest::requestError(int code, char *fmt, ...)
 	mprAssert(fmt);
 
 	stats.errors++;
-
+    if (flags & MPR_HTTP_HEADER_WRITTEN) {
+        return;
+    }
 	url = host->lookupErrorDocument(code);
 	if (url && *url) {
 		redirect(302, url);
