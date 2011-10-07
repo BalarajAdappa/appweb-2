@@ -102,8 +102,13 @@ static int	php5SapiStartup(sapi_module_struct *sapi_module);
 static int	php5SendHeaders(sapi_headers_struct *sapi_headers TSRMLS_DC);
 static void	php5Flush(void *server_context);
 static int	php5Write(const char *str, uint str_length TSRMLS_DC);
-static int	php5WriteHeader(sapi_header_struct *sapi_header, 
-				sapi_headers_struct *sapi_headers TSRMLS_DC);
+#if PHP_MAJOR_VERSION >=5 && PHP_MINOR_VERSION >= 3
+static int  php5WriteHeader(sapi_header_struct *sapiHeader, sapi_header_op_enum op, 
+        sapi_headers_struct *sapiHeaders TSRMLS_DC);
+#else
+static int  php5WriteHeader(sapi_header_struct *sapiHeader, sapi_headers_struct *sapiHeaders TSRMLS_DC);
+#endif
+
 
 //
 //	PHP Server API Module Structure
@@ -549,17 +554,43 @@ static int php5SendHeaders(sapi_headers_struct *sapi_headers TSRMLS_DC)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static int php5WriteHeader(sapi_header_struct *sapi_header, 
-	sapi_headers_struct *sapi_headers TSRMLS_DC)
+#if PHP_MAJOR_VERSION >= 5 && PHP_MINOR_VERSION >= 3
+static int php5WriteHeader(sapi_header_struct *sapiHeader, sapi_header_op_enum op, sapi_headers_struct *sapiHeaders TSRMLS_DC)
+#else
+static int php5WriteHeader(sapi_header_struct *sapiHeader, sapi_headers_struct *sapi_headers TSRMLS_DC)
+#endif
 {
 	MaRequest	*rq = (MaRequest*) SG(server_context);
 
-	rq->setHeader(sapi_header->header, !sapi_header->replace); 
+#if PHP_MAJOR_VERSION >=5 && PHP_MINOR_VERSION >= 3
+    switch(op) {
+        case SAPI_HEADER_DELETE_ALL:
+            //  TODO - not supported
+            return 0;
+
+        case SAPI_HEADER_DELETE:
+            //  TODO - not supported
+            return 0;
+
+        case SAPI_HEADER_REPLACE:
+            rq->setHeader(sapiHeader->header, 0); 
+            return SAPI_HEADER_ADD;
+
+        case SAPI_HEADER_ADD:
+            rq->setHeader(sapiHeader->header, 1); 
+            return SAPI_HEADER_ADD;
+
+        default:
+            return 0;
+    }
+#else
+	rq->setHeader(sapiHeader->header, !sapiHeader->replace); 
+#endif
 	//
 	//	This causes a crash
-	// 		efree(sapi_header->header);
+	// 		efree(sapiHeader->header);
 	//
-	// sapi_free_header(sapi_header);
+	// sapi_free_header(sapiHeader);
 	//
 	return SAPI_HEADER_ADD;
 }
