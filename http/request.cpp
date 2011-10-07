@@ -764,18 +764,16 @@ void MaRequest::processRequest()
 				}
 				state = MPR_HTTP_RUN_HANDLERS;
 				runHandlers();
-#if MOB || 1
                 if (state < MPR_HTTP_DONE && !(flags & MPR_HTTP_CONTENT_DATA)) {
                     /* Processing content data - Must not continue round this loop */
                     return;
                 }
-#endif
 			}
 			break;
 
 		default:
-			mprLog(3, tMod, "%d: processMaRequest: bad state\n", getFd());
-			requestError(404, "Bad state");
+			mprLog(4, tMod, "%d: processMaRequest: bad state: %d\n", getFd(), state);
+			requestError(404, "Bad state: %d", state);
 			finishRequest();
 			return;
 		}
