@@ -247,7 +247,7 @@ ifneq ($(BLD_ALTERNATE_CONFIG),)
 	_CFLAGS		+= -DBLD_ALTERNATE_CONFIG=\"$(BLD_ALTERNATE_CONFIG).h\"
 endif
 
-_WARNING		+= -Wall
+_WARNING		+= -Wall -Wno-write-strings
 ifeq 	($(BLD_OS),LINUX)
 _WARNING		+= -Wno-write-strings
 endif
