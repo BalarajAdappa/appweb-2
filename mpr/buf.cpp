@@ -491,7 +491,6 @@ void MprBuf::copyDown()
 	memmove(buf, start, (end - start));
 	end -= (start - buf);
 	start = buf;
-mprAssert(buflen < 800000);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
