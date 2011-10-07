@@ -110,7 +110,7 @@ endif
 #
 TARGETS		+= $(BLD_BIN_DIR)/$(BLD_PRODUCT)$(BLD_EXE)
 ifeq	($(BLD_FEATURE_TEST),1)
-TARGETS		+= $(BLD_BIN_DIR)/testAppweb$(BLD_EXE)
+# TARGETS		+= $(BLD_BIN_DIR)/testAppweb$(BLD_EXE)
 endif
 
 compileExtra: $(TARGETS) appweb.conf install.conf
@@ -183,7 +183,7 @@ $(BLD_PRODUCT).dsp: always
 run:
 	LD_LIBRARY_PATH="$(BLD_LIB_DIR):$(BLD_MOD_DIR)" \
 	DYLD_LIBRARY_PATH="$(BLD_LIB_DIR):$(BLD_MOD_DIR)" \
-		$(BLD_BIN_DIR)/$(BLD_PRODUCT) -r . -l stdout:6 -f appweb.conf
+		$(BLD_BIN_DIR)/$(BLD_PRODUCT) -r . -l stdout:3 -f appweb.conf
 
 
 cleanExtra:

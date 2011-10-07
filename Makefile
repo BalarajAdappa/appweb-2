@@ -206,10 +206,10 @@ vxenv:
 	wrenv -p vxworks-6.3 -f sh -o print_env
 
 php:
-	DIR=/Users/mob/packages/php/php-5.2.8 ; \
+	DIR=/Users/mob/git/packages.32/php/latest ; \
 	./configure --with-php5=loadable --with-php5-dir=$$DIR \
 		--with-php5-iflags="-I$$DIR -I$$DIR/main -I$$DIR/Zend -I$$DIR/TSRM" \
-		--with-php5-libpath="$$DIR/libs" --with-php5-libs="libphp5 resolv db z"
+		--with-php5-libpath="$$DIR/libs" --with-php5-libs="libphp5 resolv z"
 
 #
 #	Using ubuntu packages: uclibc-toolchain, libuclibc-dev
