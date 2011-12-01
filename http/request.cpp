@@ -1401,11 +1401,9 @@ int MaRequest::writeEvent(bool completeRequired)
 		if (completeRequired) {
 			finishRequest();
 		}
-#if MOB || 1
         if (state == MPR_HTTP_START && inBuf->getLength() > 0) {
             processRequest();
         }
-#endif
 		return 0;
 	}
 	return totalBytes;

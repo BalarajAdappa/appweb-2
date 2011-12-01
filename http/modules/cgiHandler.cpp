@@ -132,6 +132,7 @@ MaCgiHandler::~MaCgiHandler()
 		mprFree(newLocation);
 	}
 	delete headerBuf;
+    headerBuf = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -268,7 +269,7 @@ int MaCgiHandler::run(MaRequest *rq)
 	//	Build environment variables
 	//
 	variables = rq->getVariables();
-	numItems = rq->getNumEnvProperties();
+	numItems = rq->getNumEnvProperties() + 1;
 
 	//
 	//	Export the PATH and LD_LIBRARY_PATH also if Unix
@@ -276,7 +277,6 @@ int MaCgiHandler::run(MaRequest *rq)
 #if BLD_HOST_UNIX
 	numItems += 2;
 #endif
-
 	envv = (char**) mprMalloc((numItems + 1) * sizeof(char*));
 
 	index = 0;
@@ -303,6 +303,7 @@ int MaCgiHandler::run(MaRequest *rq)
 	}
 }
 #endif
+    mprAllocSprintf(&envv[index++], MPR_MAX_FNAME, "REDIRECT_STATUS=302");
 
 	envv[index] = 0;
 	mprAssert(index <= numItems);
