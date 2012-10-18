@@ -34,3 +34,7 @@ samples/C/selectEventLoop/selectEventLoop
 samples/C/simpleEgi/simpleEgi
 samples/C/simpleEsp/simpleEsp
 tools/pp
+*.log
+*.err
+*.tmp
+*.la

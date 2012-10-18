@@ -211,6 +211,11 @@ php:
 		--with-php5-iflags="-I$$DIR -I$$DIR/main -I$$DIR/Zend -I$$DIR/TSRM" \
 		--with-php5-libpath="$$DIR/libs" --with-php5-libs="libphp5 resolv z"
 
+openssl:
+	DIR=/Users/mob/git/packages-macosx-x86/openssl/latest ; \
+	./configure --with-openssl=loadable --with-openssl-dir="$$DIR" --with-openssl-iflags="-I$$DIR/include" \
+		--with-openssl-libpath="$$DIR" --with-openssl-libs="libcrypto libssl"
+
 #
 #	Using ubuntu packages: uclibc-toolchain, libuclibc-dev
 #	Use dpkg -L package to see installed files. Installed under /usr/i386-uclibc-linux
