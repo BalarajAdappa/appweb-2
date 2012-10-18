@@ -140,7 +140,7 @@ static int patchFileList(FILE *fp)
 			break;
 		}
 		cp = buf;
-		for (cp = buf; *cp && isspace(*cp); ) {
+		for (cp = buf; *cp && isspace((unsigned char) *cp); ) {
 			cp++;
 		}
 		len = strlen(cp);
@@ -254,7 +254,7 @@ static int patch(char *path)
 						path, line);
 					goto error;
 				}
-				for (start = end; *start && isspace(*start); start++);
+				for (start = end; *start && isspace((unsigned char) *start); start++);
 
 				//
 				//	Parse any pattern match args
@@ -272,7 +272,7 @@ static int patch(char *path)
 					goto error;
 				}
 
-				for (; *start && isspace(*start); start++);
+				for (; *start && isspace((unsigned char) *start); start++);
 				end = strstr(start, "-->");
 				if (end == 0) {
 					fprintf(stderr, 
@@ -507,7 +507,7 @@ static char *getNextTok(char *tokBuf, int tokBufSize, char *start)
 		return 0;
 	}
 
-	while (*start && isspace(*start)) {
+	while (*start && isspace((unsigned char) *start)) {
 		start++;
 	}
 

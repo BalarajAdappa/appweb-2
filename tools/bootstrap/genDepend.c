@@ -334,8 +334,7 @@ static int findDependencies(FILE *fp, char *fname)
 		}
 
 		ep = cp;
-		while (isalnum(*ep) || *ep == '_' || *ep == '.' || *ep == '/' || 
-				*ep == '-') {
+		while (isalnum((unsigned char) *ep) || *ep == '_' || *ep == '.' || *ep == '/' || *ep == '-') {
 			ep++;
 		}
 		*ep = '\0';

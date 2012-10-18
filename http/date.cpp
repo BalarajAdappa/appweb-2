@@ -152,7 +152,7 @@ static int parseNDIGIT(char *buf, int digits, int *index)
 	returnValue = 0;
 
 	for (tmpIndex = *index; tmpIndex < *index+digits; tmpIndex++) {
-		if (isdigit(buf[tmpIndex])) {
+		if (isdigit((uchar) buf[tmpIndex])) {
 			returnValue = returnValue * 10 + (buf[tmpIndex] - '0');
 		}
 	}

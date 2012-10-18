@@ -561,7 +561,7 @@ static int getLexicalToken(Ejs *ep, int state)
 				if (c == '\\') {
 					c = inputGetc(ep);
 
-					if (isdigit(c)) {
+					if (isdigit((uchar) c)) {
 						/*
 						 *	Octal support, \101 maps to 65 = 'A'. Put first 
 						 *	char back so converter will work properly.
@@ -626,7 +626,7 @@ static int getLexicalToken(Ejs *ep, int state)
 			if ((c = inputGetc(ep)) < 0) {
 				break;
 			}
-			if (tolower(c) == 'x') {
+			if (tolower((uchar) c) == 'x') {
 				if (tokenAddChar(ep, c) < 0) {
 					return EJS_TOK_ERR;
 				}
@@ -634,9 +634,9 @@ static int getLexicalToken(Ejs *ep, int state)
 					break;
 				}
 			}
-			if (! isdigit(c)) {
+			if (! isdigit((uchar) c)) {
 #if BLD_FEATURE_FLOATING_POINT
-				if (c == '.' || tolower(c) == 'e' || c == '+' || c == '-') {
+				if (c == '.' || tolower((uchar) c) == 'e' || c == '+' || c == '-') {
 					/* Fall through */
 					type = MPR_TYPE_FLOAT;
 				} else
@@ -660,13 +660,13 @@ static int getLexicalToken(Ejs *ep, int state)
 					break;
 				}
 #if BLD_FEATURE_FLOATING_POINT
-				if (c == '.' || tolower(c) == 'e' || c == '+' || c == '-') {
+				if (c == '.' || tolower((uchar) c) == 'e' || c == '+' || c == '-') {
 					type = MPR_TYPE_FLOAT;
 				}
-			} while (isdigit(c) || c == '.' || tolower(c) == 'e' ||
+			} while (isdigit((uchar) c) || c == '.' || tolower((uchar) c) == 'e' ||
 				c == '+' || c == '-');
 #else
-			} while (isdigit(c));
+			} while (isdigit((uchar) c));
 #endif
 
 			mprDestroyVar(&ep->tokenNumber);
@@ -692,7 +692,7 @@ static int getLexicalToken(Ejs *ep, int state)
 				if ((c = inputGetc(ep)) < 0) {
 					break;
 				}
-				if (!isalnum(c) && c != '$' && c != '_' && c != '\\') {
+				if (!isalnum((uchar) c) && c != '$' && c != '_' && c != '\\') {
 					break;
 				}
 			}
@@ -700,7 +700,7 @@ static int getLexicalToken(Ejs *ep, int state)
 				c = inputGetc(ep);
 				break;
 			}
-			if (! isalpha((int) *ep->token) && *ep->token != '$' && 
+			if (! isalpha((uchar) *ep->token) && *ep->token != '$' && 
 					*ep->token != '_') {
 				ejsError(ep, "Invalid identifier %s", ep->token);
 				return EJS_TOK_ERR;
@@ -751,7 +751,7 @@ static int charConvert(Ejs *ep, int base, int maxDig)
 		 *	Initialize to out of range value
 		 */
 		convChar = base;
-		if (isdigit(c)) {
+		if (isdigit((uchar) c)) {
 			convChar = c - '0';
 		} else if (c >= 'a' && c <= 'f') {
 			convChar = c - 'a' + 10;

@@ -1064,7 +1064,7 @@ int MaRequest::parseHeader(char *line)
 	if ((value = mprStrTok(0, "\n", &tok)) == 0) {
 		value = "";
 	}
-	while (isspace(*value)) {
+	while (isspace((uchar) *value)) {
 		value++;
 	}
 	mprStrUpper(key);
@@ -1293,7 +1293,7 @@ int MaRequest::parseHeader(char *line)
 		 */
 		char *sp = value;
 
-		while (*sp && !isdigit(*sp)) {
+		while (*sp && !isdigit((uchar) *sp)) {
 			sp++;
 		}
 		if (*sp) {
@@ -3877,18 +3877,18 @@ int MaRequest::getCrackedCookie(char *cookie, char **name, char **value,
 	key = details;
 
 	while (*key) {
-		while (*key && isspace(*key)) {
+		while (*key && isspace((uchar) *key)) {
 			key++;
 		}
 		tok = key;
-		while (*tok && !isspace(*tok) && *tok != ';' && *tok != '=') {
+		while (*tok && !isspace((uchar) *tok) && *tok != ';' && *tok != '=') {
 			tok++;
 		}
 		if (*tok) {
 			*tok++ = '\0';
 		}
 
-		while (isspace(*tok)) {
+		while (isspace((uchar) *tok)) {
 			tok++;
 		}
 
@@ -3936,7 +3936,7 @@ int MaRequest::getCrackedCookie(char *cookie, char **name, char **value,
 			seenValue++;
 
 		} else {
-			switch (tolower(*key)) {
+			switch (tolower((uchar) *key)) {
 			case 'p':
 				if (path && mprStrCmpAnyCase(key, "path") == 0) {
 					*path = mprStrdup(keyValue);

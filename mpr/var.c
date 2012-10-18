@@ -1274,10 +1274,10 @@ MprVar mprCreateFunctionVar(char *args, char *body, int flags)
 		args = mprStrdup(args);
 		arg = mprStrTok(args, ",", &last);
 		while (arg) {
-			while (isspace((int) *arg))
+			while (isspace((uchar) *arg))
 				arg++;
 			for (cp = &arg[strlen(arg) - 1]; cp > arg; cp--) {
-				if (!isspace((int) *cp)) {
+				if (!isspace((uchar) *cp)) {
 					break;
 				}
 			}
@@ -1686,28 +1686,28 @@ MprVar mprParseVar(char *buf, MprType preferredType)
 		if (*buf == '-') {
 			type = MPR_NUM_VAR;
 
-		} else if (!isdigit((int) *buf)) {
+		} else if (!isdigit((uchar) *buf)) {
 			if (strcmp(buf, "true") == 0 || strcmp(buf, "false") == 0) {
 				type = MPR_TYPE_BOOL;
 			} else {
 				type = MPR_TYPE_STRING;
 			}
 
-		} else if (isdigit((int) *buf)) {
+		} else if (isdigit((uchar) *buf)) {
 			type = MPR_NUM_VAR;
 			cp = buf;
-			if (*cp && tolower(((int) cp[1])) == 'x') {
+			if (*cp && tolower(((uchar) cp[1])) == 'x') {
 				cp = &cp[2];
 			}
 			for (cp = buf; *cp; cp++) {
-				if (! isdigit((int) *cp)) {
+				if (! isdigit((uchar) *cp)) {
 					break;
 				}
 			}
 
 			if (*cp != '\0') {
 #if BLD_FEATURE_FLOATING_POINT
-				if (*cp == '.' || tolower((int) *cp) == 'e') {
+				if (*cp == '.' || tolower((uchar) *cp) == 'e') {
 					type = MPR_TYPE_FLOAT;
 				} else
 #endif
@@ -1938,18 +1938,18 @@ int64 mprParseInteger64(char *str)
 		/* 
 		 *	Normal numbers (Radix 10)
 		 */
-		while (isdigit((int) *cp)) {
+		while (isdigit((uchar) *cp)) {
 			num64 = (*cp - '0') + (num64 * 10);
 			cp++;
 		}
 	} else {
 		cp++;
-		if (tolower((int) *cp) == 'x') {
+		if (tolower((uchar) *cp) == 'x') {
 			cp++;
 			radix = 16;
 			while (*cp) {
-				c = tolower((int) *cp);
-				if (isdigit(c)) {
+				c = tolower((uchar) *cp);
+				if (isdigit((uchar) c)) {
 					num64 = (c - '0') + (num64 * radix);
 				} else if (c >= 'a' && c <= 'f') {
 					num64 = (c - 'a') + (num64 * radix);
@@ -1962,8 +1962,8 @@ int64 mprParseInteger64(char *str)
 		} else{
 			radix = 8;
 			while (*cp) {
-				c = tolower((int) *cp);
-				if (isdigit(c) && c < '8') {
+				c = tolower((uchar) *cp);
+				if (isdigit((uchar) c) && c < '8') {
 					num64 = (c - '0') + (num64 * radix);
 				} else {
 					break;
@@ -2051,18 +2051,18 @@ int mprParseInteger(char *str)
 		/* 
 		 *	Normal numbers (Radix 10)
 		 */
-		while (isdigit((int) *cp)) {
+		while (isdigit((uchar) *cp)) {
 			num = (*cp - '0') + (num * 10);
 			cp++;
 		}
 	} else {
 		cp++;
-		if (tolower((int) *cp) == 'x') {
+		if (tolower((uchar) *cp) == 'x') {
 			cp++;
 			radix = 16;
 			while (*cp) {
-				c = tolower((int) *cp);
-				if (isdigit(c)) {
+				c = tolower((uchar) *cp);
+				if (isdigit((uchar) c)) {
 					num = (c - '0') + (num * radix);
 				} else if (c >= 'a' && c <= 'f') {
 					num = (c - 'a') + (num * radix);
@@ -2075,8 +2075,8 @@ int mprParseInteger(char *str)
 		} else{
 			radix = 8;
 			while (*cp) {
-				c = tolower((int) *cp);
-				if (isdigit(c) && c < '8') {
+				c = tolower((uchar) *cp);
+				if (isdigit((uchar) c) && c < '8') {
 					num = (c - '0') + (num * radix);
 				} else {
 					break;

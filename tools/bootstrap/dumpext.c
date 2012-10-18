@@ -51,7 +51,7 @@ GetArgcArgv(char *s, char **argv)
 
 	bp = s;
 	while (1) {
-		while (isspace(*bp)) {
+		while (isspace((uchar) *bp)) {
 			bp++;
 		}
 		if (*bp == '\n' || *bp == '\0') {
@@ -75,7 +75,7 @@ GetArgcArgv(char *s, char **argv)
 				bp++;
 				continue;
 			}
-			if (isspace(*bp)) {
+			if (isspace((uchar) *bp)) {
 				*bp = '\0';
 				bp++;
 				break;

@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 		//	Reserved chars with special meaning are:
 		//		;/?: @=&		FUTURE -- should ";?" be in the list
 		//
-		if (!isalnum(c) && !strchr("$-_.+!*'(),:@&=/~", c)) {
+		if (!isalnum((unsigned char) c) && !strchr("$-_.+!*'(),:@&=/~", c)) {
 			flags |= MPR_HTTP_ESCAPE_PATH;
 		}
 

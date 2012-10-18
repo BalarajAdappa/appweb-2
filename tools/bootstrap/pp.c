@@ -399,7 +399,7 @@ int doif(int thissym, int inif, int unknown, Reject_level prevreject, int depth)
 	}
 }
 
-#define endsym(c) (!isalpha (c) && !isdigit (c) && c != '_')
+#define endsym(c) (!isalpha((unsigned char) c) && !isdigit((unsigned char) c) && c != '_')
 
 #define KWSIZE 8
 #define MAXLINE 256
@@ -421,7 +421,7 @@ Linetype checkline(int *cursym, int unknown)
 	np = tline;
 
 	if (java) {
-		for (np = tline; isspace(*np); np++) {
+		for (np = tline; isspace((unsigned char) *np); np++) {
 			;
 		}
 		isDirective = (np[0] == '/' && np[1] == '/' && np[2] == '#');
@@ -635,7 +635,7 @@ int getlin(char *line, int maxline, FILE *inp, int expandtabs)
 #endif/*FFSPECIAL */
 	while (num + 8 < maxline) {   /* leave room for tab */
 		chr = getc (inp);
-		if (isprint (chr)) {
+		if (isprint((unsigned char) chr)) {
 #ifdef  FFSPECIAL
  ent:
 #endif/*FFSPECIAL */

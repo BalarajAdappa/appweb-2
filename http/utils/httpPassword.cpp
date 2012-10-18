@@ -434,7 +434,7 @@ static char *getpass(char *prompt)
 		} else if (c == 3) {			// Control C
 			fputs("^C\n", stderr);
 			exit(255);
-		} else if (!iscntrl(c) && (i < (int) sizeof(password) - 1)) {
+		} else if (!iscntrl((unsigned char) c) && (i < (int) sizeof(password) - 1)) {
 			password[i] = c;
 			fputc('*', stderr);
 		} else {
@@ -476,11 +476,11 @@ static char* trimWhiteSpace(char *str)
 	if (str == 0) {
 		return str;
 	}
-	while (isspace(*str)) {
+	while (isspace((unsigned char) *str)) {
 		str++;
 	}
 	len = strlen(str) - 1;
-	while (isspace(str[len])) {
+	while (isspace((unsigned char) str[len])) {
 		str[len--] = '\0';
 	}
 	return str;

@@ -307,11 +307,11 @@ char *maUrlDecode(char *buf, int len, char *uri, bool isUrl, bool multipleArgs)
 		if (*ip == '+' && multipleArgs) {
 			*op = ' ';
 
-		} else if (*ip == '%' && isxdigit(ip[1]) && isxdigit(ip[2])) {
+		} else if (*ip == '%' && isxdigit((uchar) ip[1]) && isxdigit((uchar) ip[2])) {
 			ip++;
 			num = 0;
 			for (i = 0; i < 2; i++, ip++) {
-				c = tolower(*ip);
+				c = tolower((uchar) *ip);
 				if (c >= 'a' && c <= 'f') {
 					num = (num * 16) + 10 + c - 'a';
 				} else if (c >= '0' && c <= '9') {

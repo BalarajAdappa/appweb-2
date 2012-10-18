@@ -448,8 +448,8 @@ char *mprStrLower(char *str)
 	}
 
 	for (cp = str; *cp; cp++) {
-		if (isupper(*cp)) {
-			*cp = (char) tolower(*cp);
+		if (isupper((uchar) *cp)) {
+			*cp = (char) tolower((uchar) *cp);
 		}
 	}
 	return str;
@@ -471,7 +471,7 @@ char *mprStrUpper(char *str)
 
 	for (cp = str; *cp; cp++) {
 		if (islower(*cp)) {
-			*cp = (char) toupper(*cp);
+			*cp = (char) toupper((uchar) *cp);
 		}
 	}
 	return str;
@@ -494,7 +494,7 @@ int mprStrCmpAnyCase(char *str1, char *str2)
 	}
 
 	for (rc = 0; *str1 && rc == 0; str1++, str2++) {
-		rc = tolower(*str1) - tolower(*str2);
+		rc = tolower((uchar) *str1) - tolower((uchar) *str2);
 	}
 	if (*str2) {
 		return -1;
@@ -519,7 +519,7 @@ int mprStrCmpAnyCaseCount(char *str1, char *str2, int len)
 	}
 
 	for (rc = 0; len-- > 0 && *str1 && rc == 0; str1++, str2++) {
-		rc = tolower(*str1) - tolower(*str2);
+		rc = tolower((uchar) *str1) - tolower((uchar) *str2);
 	}
 	return rc;
 }
@@ -1250,7 +1250,7 @@ static int mprSprintfCore(char **bufPtr, int maxSize, char *spec, va_list arg)
 					fmt.flags |= SPRINTF_LEFT;
 				}
 			} else {
-				while (isdigit((int)c)) {
+				while (isdigit((uchar)c)) {
 					fmt.width = fmt.width * 10 + (c - '0');
 					c = *spec++;
 				}
@@ -1267,7 +1267,7 @@ static int mprSprintfCore(char **bufPtr, int maxSize, char *spec, va_list arg)
 			if (c == '*') {
 				fmt.precision = va_arg(arg, int);
 			} else {
-				while (isdigit((int) c)) {
+				while (isdigit((uchar) c)) {
 					fmt.precision = fmt.precision * 10 + (c - '0');
 					c = *spec++;
 				}
@@ -1704,17 +1704,17 @@ int mprAtoi(char *str, int radix)
 	}
 
 	if (radix == 10) {
-		while (*str && isdigit(*str)) {
+		while (*str && isdigit((uchar) *str)) {
 			val = (val * radix) + *str - '0';
 			str++;
 		}
 	} else if (radix == 16) {
-		if (*str == '0' && tolower(str[1]) == 'x') {
+		if (*str == '0' && tolower((uchar) str[1]) == 'x') {
 			str += 2;
 		}
 		while (*str) {
-			c = tolower(*str);
-			if (isdigit(c)) {
+			c = tolower((uchar) *str);
+			if (isdigit((uchar) c)) {
 				val = (val * radix) + c - '0';
 			} else if (c >= 'a' && c <= 'f') {
 				val = (val * radix) + c - 'a' + 10;
@@ -1763,7 +1763,7 @@ void mprMakeArgv(char *program, char *cmd, char ***argvp, int *argcp)
 			}
 			return;
 		}
-		while (isspace(*cp)) {
+		while (isspace((uchar) *cp)) {
 			cp++;
 		}
 		if (*cp == '\0')  {
@@ -1777,7 +1777,7 @@ void mprMakeArgv(char *program, char *cmd, char ***argvp, int *argcp)
 			}
 		} else {
 			argv[argc] = cp;
-			while (*cp != '\0' && !isspace(*cp)) {
+			while (*cp != '\0' && !isspace((uchar) *cp)) {
 				cp++;
 			}
 		}

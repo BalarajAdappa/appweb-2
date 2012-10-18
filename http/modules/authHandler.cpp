@@ -273,7 +273,7 @@ int MaAuthHandler::readGroupFile(MaServer *server, MaAuth *auth, char *path)
 	while (file->gets(buf, sizeof(buf))) {
 		enabled = mprStrTok(buf, " :\t", &tok);
 
-		for (cp = enabled; isspace(*cp); cp++) {
+		for (cp = enabled; isspace((uchar) *cp); cp++) {
 			;
 		}
 		if (*cp == '\0' || *cp == '#') {
@@ -315,7 +315,7 @@ int MaAuthHandler::readUserFile(MaServer *server, MaAuth *auth, char *path)
 	while (file->gets(buf, sizeof(buf))) {
 		enabled = mprStrTok(buf, " :\t", &tok);
 
-		for (cp = enabled; isspace(*cp); cp++) {
+		for (cp = enabled; isspace((uchar) *cp); cp++) {
 			;
 		}
 		if (*cp == '\0' || *cp == '#') {
@@ -548,16 +548,16 @@ int MaAuthHandler::decodeDigestDetails(MaRequest *rq, char *authDetails)
 	key = authDetails;
 
 	while (*key) {
-		while (*key && isspace(*key)) {
+		while (*key && isspace((uchar) *key)) {
 			key++;
 		}
 		tok = key;
-		while (*tok && !isspace(*tok) && *tok != ',' && *tok != '=') {
+		while (*tok && !isspace((uchar) *tok) && *tok != ',' && *tok != '=') {
 			tok++;
 		}
 		*tok++ = '\0';
 
-		while (isspace(*tok)) {
+		while (isspace((uchar) *tok)) {
 			tok++;
 		}
 		seenComma = 0;
@@ -591,7 +591,7 @@ int MaAuthHandler::decodeDigestDetails(MaRequest *rq, char *authDetails)
 		//
 		//	username, response, oqaque, uri, realm, nonce, nc, cnonce, qop
 		//
-		switch (tolower(*key)) {
+		switch (tolower((uchar) *key)) {
 		case 'a':
 			if (mprStrCmpAnyCase(key, "algorithm") == 0) {
 				break;
@@ -800,11 +800,11 @@ static char* trimWhiteSpace(char *str)
 	if (str == 0) {
 		return str;
 	}
-	while (isspace(*str)) {
+	while (isspace((uchar) *str)) {
 		str++;
 	}
 	len = strlen(str) - 1;
-	while (isspace(str[len])) {
+	while (isspace((uchar) str[len])) {
 		str[len--] = '\0';
 	}
 	return str;

@@ -505,7 +505,7 @@ int MprLogService::setLogSpec(char *fileSpec)
 	logSpec = mprStrdup(fileSpec);
 	spec = mprStrdup(fileSpec);
 	for (cp = spec; *cp; cp++) {
-		if (*cp == ':' && isdigit(cp[1])) {
+		if (*cp == ':' && isdigit((uchar) cp[1])) {
 			break;
 		}
 	}

@@ -1556,7 +1556,7 @@ static int evalExpr(Ejs *ep, MprVar *lhs, int rel, MprVar *rhs)
 	 */
 	if (lhs->type != rhs->type) {
 		if (lhs->type == MPR_TYPE_STRING) {
-			if (isdigit((int) lhs->string[0])) {
+			if (isdigit((uchar) lhs->string[0])) {
 				num = mprVarToNumber(lhs);
 				mprDestroyVar(lhs);
 				*lhs = mprCreateNumberVar(num);

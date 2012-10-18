@@ -137,7 +137,7 @@ static int patchFileList(FILE *fp)
 			break;
 		}
 		cp = buf;
-		for (cp = buf; *cp && isspace(*cp); ) {
+		for (cp = buf; *cp && isspace((unsigned char) *cp); ) {
 			cp++;
 		}
 		len = strlen(cp);

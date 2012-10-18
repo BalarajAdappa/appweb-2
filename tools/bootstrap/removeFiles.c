@@ -85,7 +85,7 @@ int APIENTRY WinMain(HINSTANCE inst, HINSTANCE junk, char *args, int junk2)
 		if ((cp = strstr(args, "-s")) != 0) {
 			do {
 				cp++;
-			} while (isspace(*cp));
+			} while (isspace((uchar) *cp));
 			sleepMsecs = atoi(cp) * 1000;
 		}
 	}

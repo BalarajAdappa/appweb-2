@@ -120,7 +120,7 @@ int MaServer::configure(char *configFile)
 	for (lineNumber = 1; file->gets(buf, sizeof(buf) - 1); lineNumber++) {
 		buf[sizeof(buf) - 1] = '\0';
 		cp = buf;
-		while (isspace(*cp)) {
+		while (isspace((uchar) *cp)) {
 			cp++;
 		}
 		if (*cp == '\0' || *cp == '#') {
@@ -138,12 +138,12 @@ int MaServer::configure(char *configFile)
 			goto syntaxErr;
 		}
 		if (value) {
-			while (isspace(*value)) {
+			while (isspace((uchar) *value)) {
 				value++;
 			}
 			if (*value) {
 				cp = &value[strlen(value) - 1];
-				while (cp > value && isspace(*cp)) {
+				while (cp > value && isspace((uchar) *cp)) {
 					cp--;
 				}
 				*++cp = '\0';
@@ -525,7 +525,7 @@ int MaServer::processSetting(char *key, char *value, MaHost *host, MaDir *dir, M
 	limits = host->getLimits();
 	flags = 0;
 
-	switch (toupper(key[0])) {
+	switch (toupper((uchar) key[0])) {
 	case 'A':
 		//
 		//	All these string compares are not quick, but this is only done once
@@ -902,7 +902,7 @@ int MaServer::processSetting(char *key, char *value, MaHost *host, MaDir *dir, M
 
 			value = mprStrTrim(value, '\"');
 
-			if (isdigit(*value) && strchr(value, '.') == 0 && strchr(value, ':') == 0) {
+			if (isdigit((uchar) *value) && strchr(value, '.') == 0 && strchr(value, ':') == 0) {
 				/*
 				 *	Port only, listen on all interfaces (ipv4 + ipv6)
 				 */
@@ -1116,7 +1116,7 @@ int MaServer::processSetting(char *key, char *value, MaHost *host, MaDir *dir, M
 				code = 302;
 				url = mprStrTok(value, " \t", &tok);
 
-			} else if (isdigit(value[0])) {
+			} else if (isdigit((uchar) value[0])) {
 				cp = mprStrTok(value, " \t", &tok);
 				code = atoi(cp);
 				url = mprStrTok(0, " \t\n", &tok);

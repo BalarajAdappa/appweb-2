@@ -667,8 +667,7 @@ static int fetch(MaClient *client, char *method, char *url, char *data, int len)
 	}
 	if (!quietMode) {
 		for (i = 0; i < contentLen; i++) {
-			if (!isprint(content[i]) && content[i] != '\n' && 
-					content[i] != '\r' && content[i] != '\t') {
+			if (!isprint((uchar) content[i]) && content[i] != '\n' && content[i] != '\r' && content[i] != '\t') {
 				break;
 			}
 		}
@@ -679,7 +678,7 @@ static int fetch(MaClient *client, char *method, char *url, char *data, int len)
 				// mprPrintf("Length of content %d\n", contentLen);
 				for (i = 0; i < contentLen; i++) {
 					c = (uchar) content[i];
-					if (isprint(c) || isspace(c)) {
+					if (isprint((uchar) c) || isspace((uchar) c)) {
 						putchar(content[i]);
 					} else {
 						mprPrintf("0x%x", c);

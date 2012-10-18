@@ -882,7 +882,7 @@ int ejsGetVarCore(Ejs *ep, char *varName, MprVar **obj, MprVar **varValue,
 
 		} else if (*token == '.') {
 			token = getNextVarToken(&next, tokBuf, sizeof(tokBuf));
-			if (!isalpha((int) token[0]) && 
+			if (!isalpha((uchar) token[0]) && 
 					token[0] != '_' && token[0] != '$') {
 				mprFree(varName);
 				return -1;
@@ -928,7 +928,7 @@ static char *getNextVarToken(char **next, char *tokBuf, int tokBufLen)
 	int		len;
 
 	start = *next;
-	while (isspace((int) *start) || *start == '\n' || *start == '\r') {
+	while (isspace((uchar) *start) || *start == '\n' || *start == '\r') {
 		start++;
 	}
 	cp = start;
@@ -937,7 +937,7 @@ static char *getNextVarToken(char **next, char *tokBuf, int tokBufLen)
 		cp++;
 	} else {
 		while (*cp && *cp != '.' && *cp != '[' && *cp != ']' && 
-				!isspace((int) *cp) && *cp != '\n' && *cp != '\r') {
+				!isspace((uchar) *cp) && *cp != '\n' && *cp != '\r') {
 			cp++;
 		}
 	}

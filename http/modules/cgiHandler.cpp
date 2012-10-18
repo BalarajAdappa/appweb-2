@@ -543,7 +543,7 @@ void MaCgiHandler::parseHeader(MaRequest *rq)
 				mprFree(saveHeader);
 				return;
 			}
-			while (isspace(*value)) {
+			while (isspace((uchar) *value)) {
 				value++;
 			}
 			mprStrLower(key);

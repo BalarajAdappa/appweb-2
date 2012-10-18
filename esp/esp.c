@@ -494,7 +494,7 @@ static int getIdentifier(EspParse *parse)
 	prevC = 0;
 	c = *parse->inp++;
 
-	while (isalnum(c) || c == '_' || c == '.' || c == '[' || 
+	while (isalnum((uchar) c) || c == '_' || c == '.' || c == '[' || 
 			c == ']' || c == '\'' || c == '\"') {
 		if (c == '\'' || c == '\"') {
 			if (c == quote) {
@@ -615,12 +615,12 @@ static int getEspToken(int state, EspParse *parse)
 					break;
 				}
 				parse->inp++;
-				while (isspace((int) *parse->inp)) {
+				while (isspace((uchar) *parse->inp)) {
 					parse->inp++;
 				}
 				if (*parse->inp == '=') {
 					parse->inp++;
-					while (isspace((int) *parse->inp)) {
+					while (isspace((uchar) *parse->inp)) {
 						parse->inp++;
 					}
 					tid = ESP_TOK_EQUALS;
@@ -632,13 +632,13 @@ static int getEspToken(int state, EspParse *parse)
 				}
 				if (*parse->inp == 'i' && 
 						strncmp(parse->inp, "include", 7) == 0 &&
-						isspace((int) parse->inp[7])) {
+						isspace((uchar) parse->inp[7])) {
 					tid = ESP_TOK_INCLUDE;
 					parse->inp += 7;
-					while (isspace((int) *parse->inp)) {
+					while (isspace((uchar) *parse->inp)) {
 						parse->inp++;
 					}
-					while (*parse->inp && !isspace((int) *parse->inp) && 
+					while (*parse->inp && !isspace((uchar) *parse->inp) && 
 							*parse->inp != '%' && parse->tokp < parse->endp) {
 						if (growTokenBuf(parse, 2) < 0) {
 							return ESP_TOK_ERR;

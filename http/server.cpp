@@ -584,7 +584,7 @@ int MaServer::loadModule(char *name, char *libname)
 				MPR_DLL_EXT);
 		}
 		mprSprintf(entryPoint, sizeof(entryPoint), "mpr%sInit", name);
-		entryPoint[3] = toupper(entryPoint[3]);
+		entryPoint[3] = toupper((uchar) entryPoint[3]);
 
 		host = getDefaultHost();
 		if (locateModule(fileSystem, host, pathBuf, sizeof(pathBuf), 
@@ -842,7 +842,7 @@ int MaServer::getValue(char **arg, char *buf, char **nextToken, int quotes)
 	if (buf == 0) {
 		return -1;
 	}
-	while (isspace(*buf)) {
+	while (isspace((uchar) *buf)) {
 		buf++;
 	}
 
@@ -853,7 +853,7 @@ int MaServer::getValue(char **arg, char *buf, char **nextToken, int quotes)
 		} else {
 			return MPR_ERR_BAD_SYNTAX;
 		}
-		while (isspace(*endp)) {
+		while (isspace((uchar) *endp)) {
 			endp++;
 		}
 		*nextToken = endp;
@@ -1210,7 +1210,7 @@ MaListen::MaListen(char *ipName, int portNum, int flags)
 #endif
 	{
 		//	ipv4.
-    	if (!isdigit(*ipName)) {
+    	if (!isdigit((uchar) *ipName)) {
     		hostent = mprGetHostByName(ipName);
     	} else {
     		hostent = 0;

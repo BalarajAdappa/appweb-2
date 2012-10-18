@@ -523,8 +523,8 @@ MaAcl MaAuth::parseAcl(char *aclStr)
 		if (aclStr[0] == '0' && aclStr[1] == 'x') {
 			aclStr += 2;
 		}
-		for (; isxdigit(*aclStr); aclStr++) {
-			c = (int) tolower(*aclStr);
+		for (; isxdigit((uchar) *aclStr); aclStr++) {
+			c = (int) tolower((uchar) *aclStr);
 			if ('0' <= c && c <= '9') {
 				acl = (acl * 16) + c - '0';
 			} else {

@@ -267,7 +267,7 @@ static void WINAPI svcMainEntry(ulong argc, char **argv)
 	} else {
 		cp = argBuf;
 	}
-	while (isspace(*cp) || *cp == '\v') {
+	while (isspace((uchar) *cp) || *cp == '\v') {
 		cp++;
 	}
 	cmdLine = new MprCmdLine(cp, cmdSpec);
@@ -975,7 +975,7 @@ static int configureViaApi()
 		listens->insert(new MaListen(ipAddr, port, 0));
 
 	} else {
-		if (isdigit(*ipAddr) && strchr(ipAddr, '.') == 0) {
+		if (isdigit((uchar) *ipAddr) && strchr(ipAddr, '.') == 0) {
 			port = atoi(ipAddr);
 			if (port <= 0 || port > 65535) {
 				mprError(MPR_L, MPR_USER, "Bad listen port number %d", port);
@@ -1339,7 +1339,7 @@ static int getBrowserPath(char **path, int max)
 		if (*cp == '\\') {
 			*cp = '/';
 		}
-		*cp = tolower(*cp);
+		*cp = tolower((uchar) *cp);
 	}
 #endif
 	mprLog(4, "Browser path: %s\n", *path);

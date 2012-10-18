@@ -408,7 +408,7 @@ int MaHost::openMimeTypes(char *path)
 	line = 0;
 	while (file->gets(buf, sizeof(buf)) != 0) {
 		line++;
-		if (buf[0] == '#' || isspace(buf[0])) {
+		if (buf[0] == '#' || isspace((uchar) buf[0])) {
 			continue;
 		}
 		type = mprStrTok(buf, " \t\n\r", &tok);
@@ -572,7 +572,7 @@ void MaHost::setIpSpec(char *str)
 	if (*str == ':') {
 		str++;
 	}
-	if (isdigit(*str) && strchr(str, '.') == 0) {
+	if (isdigit((uchar) *str) && strchr(str, '.') == 0) {
 		mprSprintf(buf, sizeof(buf), "127.0.0.1:%s", str);
 		str = buf;
 	}

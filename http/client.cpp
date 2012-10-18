@@ -982,7 +982,7 @@ int MaClient::parseHeader(char *line)
 	if ((value = mprStrTok(0, "\n", &tok)) == 0) {
 		value = "";
 	}
-	while (isspace(*value)) {
+	while (isspace((uchar) *value)) {
 		value++;
 	}
 
@@ -992,7 +992,7 @@ int MaClient::parseHeader(char *line)
 
 	if (strcmp("www-authenticate", key) == 0) {
 		tp = value;
-		while (*value && !isspace(*value)) {
+		while (*value && !isspace((uchar) *value)) {
 			value++;
 		}
 		*value++ = '\0';
@@ -1043,16 +1043,16 @@ int MaClient::parseAuthenticate(char *authDetails)
 	key = authDetails;
 
 	while (*key) {
-		while (*key && isspace(*key)) {
+		while (*key && isspace((uchar) *key)) {
 			key++;
 		}
 		tok = key;
-		while (*tok && !isspace(*tok) && *tok != ',' && *tok != '=') {
+		while (*tok && !isspace((uchar) *tok) && *tok != ',' && *tok != '=') {
 			tok++;
 		}
 		*tok++ = '\0';
 
-		while (isspace(*tok)) {
+		while (isspace((uchar) *tok)) {
 			tok++;
 		}
 		seenComma = 0;
@@ -1086,7 +1086,7 @@ int MaClient::parseAuthenticate(char *authDetails)
 		//
 		//	algorithm, domain, nonce, oqaque, realm, qop, stale
 		//	
-		switch (tolower(*key)) {
+		switch (tolower((uchar) *key)) {
 		case 'a':
 			if (mprStrCmpAnyCase(key, "algorithm") == 0) {
 				mprFree(serverAlgorithm);
