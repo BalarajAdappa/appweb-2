@@ -260,8 +260,8 @@ MprSocket *MaOpenSslConfig::newSocket()
 
 int MaOpenSslConfig::start()
 {
-	SSL_METHOD	*meth;
-	char		*hostName;
+	const SSL_METHOD	*meth;
+	char		        *hostName;
 
 	if (keyFile == 0) {
 		mprError(MPR_L, MPR_LOG, "OpenSSL: Cant start SSL: missing key file");
@@ -350,9 +350,7 @@ int MaOpenSslConfig::start()
 			mprLog(4, "SSL: %s: Using certificates from directory %s\n", 
 				hostName, caPath);
 		}
-		SSL_CTX_set_verify(context, 
-			SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, 
-			verifyX509Certificate);
+		SSL_CTX_set_verify(context, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, verifyX509Certificate);
 		SSL_CTX_set_verify_depth(context, verifyDepth);
 
 	} else {
@@ -370,13 +368,18 @@ int MaOpenSslConfig::start()
 	//
 	SSL_CTX_set_options(context, SSL_OP_ALL);
 
+#ifdef SSL_OP_NO_TICKET
+    SSL_CTX_set_options(context, SSL_OP_NO_TICKET);
+#endif
+#ifdef SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION
+    SSL_CTX_set_options(context, SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION);
+#endif
+    SSL_CTX_set_mode(context, SSL_MODE_ENABLE_PARTIAL_WRITE | SSL_MODE_AUTO_RETRY);
+
 	//
 	//	Select the required protocols
 	//
-	if (!(protocols & MPR_HTTP_PROTO_SSLV2)) {
-		SSL_CTX_set_options(context, SSL_OP_NO_SSLv2);
-		mprLog(4, "SSL: %s: Disabling SSLv2\n", hostName);
-	}
+    SSL_CTX_set_options(context, SSL_OP_NO_SSLv2);
 	if (!(protocols & MPR_HTTP_PROTO_SSLV3)) {
 		SSL_CTX_set_options(context, SSL_OP_NO_SSLv3);
 		mprLog(4, "SSL: %s: Disabling SSLv3\n", hostName);
