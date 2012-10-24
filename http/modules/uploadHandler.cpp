@@ -213,12 +213,6 @@ MaHandler *MaUploadHandler::cloneHandler()
 	MaUploadHandler	*ep;
 
 	ep = new MaUploadHandler(extensions, log);
-
-#if UNUSED
-	//	FUTURE -- could be optimized. Is always duped in constructor above.
-	mprFree(ep->uploadDir);
-	ep->uploadDir = mprStrdup(uploadDir);
-#endif
 	ep->location = location;
 	return ep;
 }
