@@ -476,7 +476,6 @@ int MprBuf::grow()
 	if (((buflen - 1) + (growBy * 2)) < maxsize) {
 		growBy *= 2;
 	}
-mprAssert(buflen < 800000);
 	return 1;
 }
 
