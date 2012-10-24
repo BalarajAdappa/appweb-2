@@ -46,12 +46,6 @@ static void		writePid();
 static void 	(*chainFunc)(int signo, siginfo_t *info, void *arg);
 #endif
 
-#if BLD_FEATURE_MULTITHREAD
-#if JFIX
-static MprSpinLock cmdLock;
-#endif
-#endif
-
 //////////////////////////////////// Code //////////////////////////////////////
 //
 //	Initialize the platform layer
@@ -79,13 +73,6 @@ int Mpr::platformInitialize()
 	//
 	openlog(mprGetMpr()->getAppName(), LOG_CONS || LOG_PERROR, LOG_LOCAL0);
 #endif
-
-#if JFIX
-#if BLD_FEATURE_MULTITHREAD
-	mprSpinInit(&cmdLock);
-#endif
-#endif
-
 	return 0;
 }
 
@@ -96,11 +83,6 @@ int Mpr::platformInitialize()
 
 int Mpr::platformTerminate()
 {
-#if JFIX
-#if BLD_FEATURE_MULTITHREAD
-	mprSpinDestroy(&cmdLock);
-#endif
-#endif
 	return 0;
 }
 
@@ -320,22 +302,6 @@ static void cmdCompleted(int signo, siginfo_t *info, void *arg)
 {
 	int		pid, rc, status, code, saveErrno;
 
-#if JFIX
-#if BLD_FEATURE_MULTITHREAD
-	int once = 0;
-
-	/*
-	 *	Must prevent other threads from entering here. Note: we can be reentrant
-	 *	on our own thread.
-	 */
-	mprSpinLock(&cmdLock);
-	if (once++ > 0) {
-		char *msg = "WARNING: Reentrant signal";
-		write(0, msg, (int) strlen(msg));
-	}
-#endif
-#endif
-
 	saveErrno = errno;
 	mprAssert(signo == SIGCHLD && info);
 
@@ -375,15 +341,7 @@ static void cmdCompleted(int signo, siginfo_t *info, void *arg)
 	if (chainFunc) {
 		(*chainFunc)(signo, info, arg);
 	}
-
 	errno = saveErrno;
-
-#if JFIX
-#if BLD_FEATURE_MULTITHREAD
-	once--;
-	mprSpinUnlock(&cmdLock);
-#endif
-#endif
 }
 
 
@@ -402,13 +360,11 @@ void MprCmdService::processStatus(ulong pid, int status)
 	for (i = 0; i < MPR_CMD_REAP_MAX; i++) {
 		if (children[i].pid <= 1) {
             children[i].pid = pid;
-#if JFIX || 1
             /*  Lockfree race detection. Getpid is a crude memory barrier. */
             (void) getpid();
             if (children[i].pid != pid) {
                 continue;
             }
-#endif
 			children[i].exitStatus = status;
 			break;
 		}
