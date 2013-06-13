@@ -1301,15 +1301,15 @@ int MaRequest::parseHeader(char *line)
 
 			if ((sp = strchr(sp, '-')) != 0) {
 				inputEnd = mprAtoi(++sp, 10);
-			}
-			if ((sp = strchr(sp, '/')) != 0) {
-				/*
-				 *	Note this is not the content length transmitted, but the
-				 *	original size of the input of which the client is
-				 *	transmitting only a portion.
-			 	 */
-				inputTotalSize = mprAtoi(++sp, 10);
-			}
+                if ((sp = strchr(sp, '/')) != 0) {
+                    /*
+                     *	Note this is not the content length transmitted, but the
+                     *	original size of the input of which the client is
+                     *	transmitting only a portion.
+                     */
+                    inputTotalSize = mprAtoi(++sp, 10);
+                }
+            }
 		}
 		if (inputStart < 0 || inputEnd < 0 || inputTotalSize < 0 ||
 				inputEnd <= inputStart) {
